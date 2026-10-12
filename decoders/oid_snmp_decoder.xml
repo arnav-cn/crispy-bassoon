@@ -1,0 +1,17 @@
+<decoder name="oid_snmp_decoder">
+  <prematch>SNMPTRAP: </prematch>
+  <regex>host=(\S+) engine_id=(\S+) user=(\S+)</regex>
+  <order>location, engine_id, srcuser</order>
+</decoder>
+
+<decoder name="oid_snmp_decoder_fields">
+  <parent>oid_snmp_decoder</parent>
+  <regex>OID: (\S+)</regex>
+  <order>oid</order>
+</decoder>
+
+<decoder name="oid_snmp_decoder_session">
+  <parent>oid_snmp_decoder</parent>
+  <regex type="pcre2">4413\.1\.1\.1\.2\.1\.1\.1\.1\.\d+\s*=\s*INTEGER:\s*(\d+).*?4413\.1\.1\.1\.2\.1\.1\.1\.2\.\d+\s*=\s*STRING:\s*"([^"]+)".*?4413\.1\.1\.1\.2\.1\.1\.1\.4\.\d+\s*=\s*INTEGER:\s*(\d+).*?4413\.1\.1\.1\.2\.1\.1\.1\.9\.\d+\s*=\s*STRING:\s*"([^"]+)"</regex>
+  <order>session_id, session_user, action_code, session_ip</order>
+</decoder>

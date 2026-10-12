@@ -1,0 +1,119 @@
+<!--
+  Wazuh 4.9.2 SNMP Trap Decoder
+  Compatible with Net-SNMP snmptrapd
+-->
+
+
+
+  <!-- Base SNMP Trap -->
+  <decoder name="snmptrap">
+    <prematch>^SNMPTRAP:</prematch>
+  </decoder>
+
+  <!-- Extract common SNMPv3 fields -->
+  <decoder name="snmptrap-header">
+    <parent>snmptrap</parent>
+
+    <regex>
+^SNMPTRAP:\s+host=([^\s]+)\s+engine_id=([^\s]+)\s+user=([^\s]+).+SNMP\s+v([0-9]+)
+    </regex>
+
+    <order>
+srcip,
+engine_id,
+snmp_user,
+snmp_version
+    </order>
+
+  </decoder>
+
+  <!-- Trap OID -->
+
+  <decoder name="snmptrap-oid">
+    <parent>snmptrap</parent>
+
+    <regex>
+\.1\.3\.6\.1\.6\.3\.1\.1\.4\.1\.0\s*=\s*OID:\s*(\.[0-9\.]+)
+    </regex>
+
+    <order>
+trap_oid
+    </order>
+
+  </decoder>
+
+  <!-- Device IP -->
+
+  <decoder name="snmptrap-device-ip">
+    <parent>snmptrap</parent>
+
+    <regex>
+\.1\.3\.6\.1\.4\.1\.4413\.1\.1\.1\.2\.1\.1\.1\.9\.0\s*=\s*STRING:\s*"([0-9\.]+)"
+    </regex>
+
+    <order>
+device_ip
+    </order>
+
+  </decoder>
+
+  <!-- Login Type -->
+
+  <decoder name="snmptrap-login-type">
+    <parent>snmptrap</parent>
+
+    <regex>
+\.1\.3\.6\.1\.4\.1\.4413\.1\.1\.1\.2\.1\.1\.1\.4\.0\s*=\s*INTEGER:\s*([0-9]+)
+    </regex>
+
+    <order>
+login_type
+    </order>
+
+  </decoder>
+
+  <!-- Session Type -->
+
+  <decoder name="snmptrap-session-type">
+    <parent>snmptrap</parent>
+
+    <regex>
+\.1\.3\.6\.1\.4\.1\.4413\.1\.1\.1\.2\.1\.1\.1\.7\.0\s*=\s*INTEGER:\s*([0-9]+)
+    </regex>
+
+    <order>
+session_type
+    </order>
+
+  </decoder>
+
+  <!-- Login Result -->
+
+  <decoder name="snmptrap-login-result">
+    <parent>snmptrap</parent>
+
+    <regex>
+\.1\.3\.6\.1\.4\.1\.4413\.1\.1\.1\.2\.1\.1\.1\.1\.0\s*=\s*INTEGER:\s*([0-9]+)
+    </regex>
+
+    <order>
+login_result
+    </order>
+
+  </decoder>
+
+  <!-- Login Name -->
+
+  <decoder name="snmptrap-login-user">
+    <parent>snmptrap</parent>
+
+    <regex>
+\.1\.3\.6\.1\.4\.1\.4413\.1\.1\.1\.2\.1\.1\.1\.2\.0\s*=\s*STRING:\s*"([^"]+)"
+    </regex>
+
+    <order>
+login_user
+    </order>
+
+  </decoder>
+

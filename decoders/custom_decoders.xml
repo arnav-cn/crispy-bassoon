@@ -1,0 +1,60 @@
+<!--
+  - Custom decoders for resource monitoring
+  - Created by your team
+  - This program is free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+<decoder name="resource_monitor">
+    <prematch>^{</prematch>
+    <regex>"timestamp":\s*"([^"]+)"</regex>
+    <order>timestamp</order>
+</decoder>
+
+<decoder name="cpu_usage">
+  <parent>resource_monitor</parent>
+  <prematch>^</prematch>
+  <regex>"cpu_usage":\s*"(\d+\.\d+)%"</regex>
+  <order>cpu_usage</order>
+</decoder>
+
+<decoder name="ram_usage">
+  <parent>resource_monitor</parent>
+  <prematch>^</prematch>
+  <regex>"ram_usage":\s*"(\d+\.\d+)%"</regex>
+  <order>ram_usage</order>
+</decoder>
+
+<decoder name="disk_usage">
+  <parent>resource_monitor</parent>
+  <prematch>^</prematch>
+  <regex>"disk_usage":\s*"(\d+\.\d+)%"</regex>
+  <order>disk_usage</order>
+</decoder>
+
+<!--
+<decoder name="top_processes">
+  <parent>resource_monitor</parent>
+  <prematch>^</prematch>
+  <regex>"top_processes":\s*(.*)</regex>
+  <order>top_processes</order>
+</decoder>
+-->
+<decoder name="top_processes">
+  <parent>resource_monitor</parent>
+  <prematch>^</prematch>
+  <regex>"top_processes":\s*{.*?"name":\s*".*?","memory":\s*".*?"}.*</regex>
+  <order>top_processes</order>
+</decoder>
+
+<decoder name="process_entry">
+  <parent>resource_monitor</parent>
+  <prematch>^</prematch>
+  <regex>"name":\s*"([^"]+)"\s*,\s*"memory":\s*"([^"]+)"</regex>
+  <order>process_name,process_memory</order>
+</decoder>
+
+<decoder name="parsed_processes">
+  <!-- Match the log format using regular expressions -->
+  <prematch>process</prematch>
+  <regex>\s*(\d+)\s*(\S+)\s*(\d+\.\d)\s*(\d+\.\d)\s*(\S+)\s*(\S+)$</regex>
+  <order>PID, USER, %CPU, %MEM, TIME+, COMMAND</order>
+</decoder>

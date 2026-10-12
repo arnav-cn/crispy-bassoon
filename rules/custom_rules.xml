@@ -1,0 +1,31 @@
+<group name="resource-monitor">
+    <!-- Rule for high CPU usage -->
+    <rule id="100011" level="1">
+        <decoded_as>cpu_usage</decoded_as>
+        <description>High CPU usage detected</description>
+    </rule>
+
+    <!-- Rule for high RAM usage -->
+    <rule id="100012" level="1">
+        <decoded_as>ram_usage</decoded_as>
+        <description>High RAM usage detected</description>
+    </rule>
+
+    <!-- Rule for high Disk usage -->
+    <rule id="100013" level="1">
+        <decoded_as>disk_usage</decoded_as>
+        <description>High Disk usage detected</description>
+    </rule>
+    <!-- Rule for Top Processes consuming memory -->    
+    <rule id="100014" level="1">
+        <decoded_as>top_processes</decoded_as>
+        <description>Process consuming high memory detected</description>
+    </rule>
+</group>
+
+<group name="resource_monitoring">
+  <rule id="100021" level="1">
+    <decoded_as>parsed_processes</decoded_as>
+    <description>Top 5 resource-consuming processes</description>
+  </rule>
+</group>

@@ -1,0 +1,57 @@
+<!-- Modify it at your will. -->
+<group name="audit,local_force_key,">
+
+    <!-- Force indexing of any audit event containing audit.key -->
+    <rule id="400601" level="3">
+        <if_group>audit</if_group>
+        <field name="audit.key">.+</field>
+        <description>Audit event with key $(audit.key)</description>
+    </rule>
+
+    <!-- Rule for SYSCALL events -->
+    <rule id="400101" level="3">
+        <if_group>audit</if_group>
+        <field name="audit.type">^SYSCALL$</field>
+        <field name="audit.key">.+</field>
+        <description>Audit SYSCALL event detected with key: $(audit.key)</description>
+    </rule>
+
+    <!-- Rule for CONFIG_CHANGE events -->
+    <rule id="400102" level="3">
+        <if_group>audit</if_group>
+        <field name="audit.type">^CONFIG_CHANGE$</field>
+        <field name="audit.key">.+</field>
+        <description>Audit CONFIG_CHANGE event detected with key: $(audit.key)</description>
+    </rule>
+
+    <!-- Rule for PROCTITLE events -->
+    <rule id="400103" level="3">
+        <if_group>audit</if_group>
+        <field name="audit.type">^PROCTITLE$</field>
+        <field name="audit.key">.+</field>
+        <description>Audit PROCTITLE event detected with key: $(audit.key)</description>
+    </rule>
+
+    <!-- Rule for PATH events -->
+    <rule id="400104" level="3">
+        <if_group>audit</if_group>
+        <field name="audit.type">^PATH$</field>
+        <field name="audit.key">.+</field>
+        <description>Audit PATH event detected with key: $(audit.key)</description>
+    </rule>
+
+    <!-- Rule for SOCKADDR events -->
+    <rule id="400105" level="3">
+        <if_group>audit</if_group>
+        <field name="audit.type">^SOCKADDR$</field>
+        <field name="audit.key">.+</field>
+        <description>Audit SOCKADDR event detected with key: $(audit.key)</description>
+    </rule>
+
+    <!-- Generic fallback rule -->
+    <rule id="400199" level="3">
+        <if_group>audit</if_group>
+        <field name="audit.key">.+</field>
+        <description>Audit event detected with type: $(audit.type) and key: $(audit.key)</description>
+    </rule>
+</group>

@@ -1,0 +1,144 @@
+<!-- Local rules -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<!-- Example -->
+<group name="local,syslog,sshd,">
+
+  <!--
+  Dec 10 01:02:02 host sshd[1234]: Failed none for root from 1.1.1.1 port 1066 ssh2
+  -->
+  <rule id="100001" level="5">
+    <if_sid>5716</if_sid>
+    <srcip>1.1.1.1</srcip>
+    <description>sshd: authentication failed from IP 1.1.1.1.</description>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
+  </rule>
+
+  <rule id="100015" level="3">
+    <decoded_as>kernel</decoded_as>
+    <match>apcli|ra0|rai0|hostapd|WiFi@</match>
+    <description>Access Point Log from $(location)</description>
+  </rule>
+
+</group>
+
+
+<group name="performance_metric,">
+
+<!-- CPU, Memory and Disk usage -->
+<rule id="100054" level="3">
+  <decoded_as>general_health_check</decoded_as>
+  <description>CPU | MEMORY | DISK usage metrics</description>
+</rule>
+
+<!-- High memory usage -->
+<rule id="100055" level="12">
+  <if_sid>100054</if_sid>
+  <field name="memory_usage_%">^[8-9]\d|100</field>
+  <description>Memory usage is high: $(memory_usage_%)%</description>
+  <options>no_full_log</options>
+</rule>
+
+<!-- High CPU usage -->
+<rule id="100056" level="12">
+  <if_sid>100054</if_sid>
+  <field name="cpu_usage_%">^[8-9]\d|100</field>
+  <description>CPU usage is high: $(cpu_usage_%)%</description>
+  <options>no_full_log</options>
+</rule>
+
+<!-- High disk usage -->
+<rule id="100057" level="12">
+  <if_sid>100054</if_sid>
+  <field name="disk_usage_%">^[7-9]\d|100</field>
+  <description>Disk space is running low: $(disk_usage_%)%</description>
+  <options>no_full_log</options>
+</rule>
+
+<!-- Load average check -->
+<rule id="100058" level="3">
+  <decoded_as>load_average_check</decoded_as>
+  <description>Load average metrics</description>
+</rule>
+
+<!-- memory check -->
+<rule id="100059" level="3">
+  <decoded_as>memory_check</decoded_as>
+  <description>Memory metrics</description>
+</rule>
+
+<!-- Disk check -->
+<rule id="100062" level="3">
+  <decoded_as>disk_check</decoded_as>
+  <description>Disk metrics</description>
+</rule>
+
+</group>
+
+<group name="syslog,network_switch,">
+
+  <!-- Rule 100200: Base catch-all for network switch syslog events -->
+  <rule id="100200" level="3">
+    <decoded_as>network_switch</decoded_as>
+    <description>Network switch syslog event received</description>
+  </rule>
+
+  <!-- Rule 100201: Session Started (CLI/Telnet/SSH/Console/HTTP) -->
+  <rule id="100201" level="3">
+    <if_sid>100200</if_sid>
+    <match>started for user </match>
+    <description>Network switch session started for user</description>
+    <group>authentication_success,</group>
+  </rule>
+
+  <!-- Rule 100202: Session Ended (CLI/Telnet/SSH/Console/HTTP) -->
+  <rule id="100202" level="3">
+    <if_sid>100200</if_sid>
+    <match>ended for user </match>
+    <description>Network switch session ended for user</description>
+    <group>authentication_success,</group>
+  </rule>
+
+  <!-- Rule 100203: Spanning Tree Protocol (STP) Topology Changes -->
+  <rule id="100203" level="4">
+    <if_sid>100200</if_sid>
+    <match>Spanning Tree|STP root</match>
+    <description>Network switch Spanning Tree (STP) topology change</description>
+    <group>network_change,stp,</group>
+  </rule>
+
+  <!-- Rule 100204: Max Login Sessions Exceeded / Resource Warnings -->
+  <rule id="100204" level="6">
+    <if_sid>100200</if_sid>
+    <match>Max number of Telnet login sessions exceeded|Logging Count|exceeds threshold</match>
+    <description>Network switch security alert or threshold exceeded</description>
+    <group>authentication_failed,system_warning,</group>
+  </rule>
+
+  <!-- Rule 100206: Telnet Send Failed -->
+  <rule id="100206" level="5">
+    <if_sid>100200</if_sid>
+    <match>Telnet Send Failed</match>
+    <description>Network switch Telnet send failed to client</description>
+    <group>system_error,network,</group>
+  </rule>
+
+  <!-- Rule 100207: Configuration Change -->
+  <rule id="100207" level="5">
+    <if_sid>100200</if_sid>
+    <match>startup-config' has changed|startup-config has changed</match>
+    <description>Network switch startup-config has changed</description>
+    <group>config_changed,pci_dss_10.2.7,</group>
+  </rule>
+
+  <!-- Rule 100205: Generic Failure or Error event -->
+  <rule id="100205" level="5">
+    <if_sid>100200</if_sid>
+    <match>failed|Failed|error|Error|denied|Denied|invalid|Invalid</match>
+    <description>Network switch error or failure event</description>
+    <group>authentication_failed,</group>
+  </rule>
+
+</group>

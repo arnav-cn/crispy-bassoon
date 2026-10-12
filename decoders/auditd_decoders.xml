@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decoders>
+
+  <!-- ==================== CONFIG_CHANGE ==================== -->
+  <decoder name="auditd-config_change">
+    <prematch>^type=CONFIG_CHANGE</prematch>
+  </decoder>
+
+  <decoder name="auditd-config_change">
+    <parent>auditd-config_change</parent>
+    <regex offset="after_parent">msg=audit\(\d+\.\d+:(\d+)\):</regex>
+    <order>audit.id</order>
+  </decoder>
+
+  <decoder name="auditd-config_change">
+    <parent>auditd-config_change</parent>
+    <regex>auid=(\S+) ses=(\S+) subj=(\S+) op=(\S+)</regex>
+    <order>audit.auid,audit.session,audit.subj,audit.op</order>
+  </decoder>
+
+  <decoder name="auditd-config_change">
+    <parent>auditd-config_change</parent>
+    <regex>key=\(([^)]*)\)</regex>
+    <order>audit.key</order>
+  </decoder>
+
+  <decoder name="auditd-config_change">
+    <parent>auditd-config_change</parent>
+    <regex>key="([^"]*)"</regex>
+    <order>audit.key</order>
+  </decoder>
+
+  <decoder name="auditd-config_change">
+    <parent>auditd-config_change</parent>
+    <regex>key=(\S+)</regex>
+    <order>audit.key</order>
+  </decoder>
+
+  <decoder name="auditd-config_change">
+    <parent>auditd-config_change</parent>
+    <regex>list=(\S+)</regex>
+    <order>audit.list</order>
+  </decoder>
+
+  <decoder name="auditd-config_change">
+    <parent>auditd-config_change</parent>
+    <regex>res=(\S+)</regex>
+    <order>audit.res</order>
+  </decoder>
+
+  <!-- ==================== EXECVE ==================== -->
+  <decoder name="auditd-execve">
+    <prematch>^type=EXECVE</prematch>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_parent">msg=audit\(\d+\.\d+:(\d+)\):\s*argc=(\d+)</regex>
+    <order>audit.id,audit.argc</order>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_regex">a0="([^"]*)"</regex>
+    <order>audit.execve.a0</order>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_regex">a1="([^"]*)"</regex>
+    <order>audit.execve.a1</order>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_regex">a2="([^"]*)"</regex>
+    <order>audit.execve.a2</order>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_regex">a3="([^"]*)"</regex>
+    <order>audit.execve.a3</order>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_regex">a4="([^"]*)"</regex>
+    <order>audit.execve.a4</order>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_regex">a5="([^"]*)"</regex>
+    <order>audit.execve.a5</order>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_regex">a6="([^"]*)"</regex>
+    <order>audit.execve.a6</order>
+  </decoder>
+
+  <decoder name="auditd-execve">
+    <parent>auditd-execve</parent>
+    <regex offset="after_regex">a7="([^"]*)"</regex>
+    <order>audit.execve.a7</order>
+  </decoder>
+
+  <!-- ==================== PATH ==================== -->
+  <decoder name="auditd-path">
+    <prematch>^type=PATH</prematch>
+  </decoder>
+
+  <decoder name="auditd-path">
+    <parent>auditd-path</parent>
+    <regex offset="after_parent">msg=audit\(\d+\.\d+:(\d+)\):\s*item=(\S+)\s+name="([^"]*)"\s+inode=(\S+)\s+dev=(\S+)\s+mode=(\S+)\s+ouid=(\S+)\s+ogid=(\S+)\s+rdev=(\S+)\s+nametype=(\S+)</regex>
+    <order>audit.id,audit.item,audit.directory.name,audit.directory.inode,audit.directory.dev,audit.directory.mode,audit.ouid,audit.ogid,audit.rdev,audit.directory.nametype</order>
+  </decoder>
+
+  <!-- ==================== SYSCALL ==================== -->
+  <decoder name="auditd-syscall">
+    <prematch>^type=SYSCALL</prematch>
+  </decoder>
+
+  <decoder name="auditd-syscall">
+    <parent>auditd-syscall</parent>
+    <regex offset="after_parent">msg=audit\(\d+\.\d+:(\d+)\):</regex>
+    <order>audit.id</order>
+  </decoder>
+
+  <decoder name="auditd-syscall">
+    <parent>auditd-syscall</parent>
+    <regex offset="after_regex">^\s*arch=(\S+) syscall=(\d+) success=(\S+) exit=(\S+) a0=\S+ a1=\S+ a2=\S+ a3=\S+ items=\S+ ppid=(\S+) pid=(\S+) auid=(\S+) uid=(\S+) gid=(\S+) euid=(\S+) suid=(\S+) fsuid=(\S+) egid=(\S+) sgid=(\S+) fsgid=(\S+) tty=(\S+) ses=(\S+) comm="([^"]*)" exe="([^"]*)"</regex>
+    <order>audit.arch,audit.syscall,audit.success,audit.exit,audit.ppid,audit.pid,audit.auid,audit.uid,audit.gid,audit.euid,audit.suid,audit.fsuid,audit.egid,audit.sgid,audit.fsgid,audit.tty,audit.session,audit.command,audit.exe</order>
+  </decoder>
+
+  <decoder name="auditd-syscall">
+    <parent>auditd-syscall</parent>
+    <regex offset="after_regex">key=\(([^)]*)\)</regex>
+    <order>audit.key</order>
+  </decoder>
+
+  <decoder name="auditd-syscall">
+    <parent>auditd-syscall</parent>
+    <regex offset="after_regex">key="([^"]*)"</regex>
+    <order>audit.key</order>
+  </decoder>
+
+  <decoder name="auditd-syscall">
+    <parent>auditd-syscall</parent>
+    <regex offset="after_regex">key=(\S+)</regex>
+    <order>audit.key</order>
+  </decoder>
+
+  <!-- ==================== USER_AND_CRED ==================== -->
+  <decoder name="auditd-user_and_cred">
+    <prematch>^type=USER_ACCT|^type=CRED_ACQ|^type=USER_START|^type=CRED_REFR|^type=CRYPTO_KEY_USER|^type=CRYPTO_SESSION|^type=USER_AUTH|^type=USER_ROLE_CHANGE|^type=SERVICE_STOP</prematch>
+  </decoder>
+
+  <decoder name="auditd-user_and_cred">
+    <parent>auditd-user_and_cred</parent>
+    <regex offset="after_parent">^type=(\S+) msg=audit\(\d+\.\d+:(\d+)\):</regex>
+    <order>audit.type,audit.id</order>
+  </decoder>
+
+  <decoder name="auditd-user_and_cred">
+    <parent>auditd-user_and_cred</parent>
+    <regex offset="after_regex">pid=(\S+) uid=(\S+) auid=(\S+) ses=(\S+)</regex>
+    <order>audit.pid,audit.uid,audit.auid,audit.session</order>
+  </decoder>
+
+  <decoder name="auditd-user_and_cred">
+    <parent>auditd-user_and_cred</parent>
+    <regex offset="after_regex">subj=(\S+)</regex>
+    <order>audit.subj</order>
+  </decoder>
+
+  <decoder name="auditd-user_and_cred">
+    <parent>auditd-user_and_cred</parent>
+    <regex offset="after_regex">acct="([^"]*)"</regex>
+    <order>audit.acct</order>
+  </decoder>
+
+  <decoder name="auditd-user_and_cred">
+    <parent>auditd-user_and_cred</parent>
+    <regex offset="after_regex">unit=(\S+)</regex>
+    <order>audit.unit</order>
+  </decoder>
+
+  <decoder name="auditd-user_and_cred">
+    <parent>auditd-user_and_cred</parent>
+    <regex offset="after_regex">exe="([^"]*)"</regex>
+    <order>audit.exe</order>
+  </decoder>
+
+  <decoder name="auditd-user_and_cred">
+    <parent>auditd-user_and_cred</parent>
+    <regex offset="after_regex">addr=(\S+)</regex>
+    <order>srcip</order>
+  </decoder>
+
+  <!-- ==================== CWD ==================== -->
+  <decoder name="auditd-cwd">
+    <prematch>^type=CWD</prematch>
+  </decoder>
+
+  <decoder name="auditd-cwd">
+    <parent>auditd-cwd</parent>
+    <regex offset="after_parent">msg=audit\(\d+\.\d+:(\d+)\):\s*cwd="([^"]*)"</regex>
+    <order>audit.id,audit.cwd</order>
+  </decoder>
+
+  <!-- ==================== PROCTITLE ==================== -->
+  <decoder name="auditd-proctitle">
+    <prematch>^type=PROCTITLE</prematch>
+  </decoder>
+
+  <decoder name="auditd-proctitle">
+    <parent>auditd-proctitle</parent>
+    <regex offset="after_parent">msg=audit\(\d+\.\d+:(\d+)\):\s*proctitle=(\S+)</regex>
+    <order>audit.id,audit.proctitle</order>
+  </decoder>
+
+</decoders>

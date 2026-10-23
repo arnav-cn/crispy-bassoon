@@ -1,0 +1,13 @@
+name: decoder/test-win3/0
+parents:
+  - decoder/core-wazuh-message/0
+metadata:
+  title: test windows decoder 3
+check: 'contains($event.original, "EventID")'
+normalize:
+  - check: 'contains($event.original, "EventID")'
+    map:
+      - 'event.dataset': 'sysmon-linux'
+      - 'event.kind': 'event'
+      - 'event.code': 'test_value'
+enabled: true

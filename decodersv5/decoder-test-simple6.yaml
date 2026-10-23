@@ -1,0 +1,11 @@
+name: decoder/test-simple9/0
+parents:
+  - decoder/core-wazuh-message/0
+metadata:
+  title: test simple decoder 6
+check: 'contains($event.original, "EventID")'
+normalize:
+  - check: 'contains($event.original, "EventID")'
+    map:
+      - "event.code": "regex_extract($event.original, \"EventID([0-9]+)\")"
+enabled: true

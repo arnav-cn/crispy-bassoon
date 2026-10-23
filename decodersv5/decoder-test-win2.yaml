@@ -1,0 +1,13 @@
+name: decoder/test-win2/0
+parents:
+  - decoder/core-wazuh-message/0
+metadata:
+  title: test windows decoder 2
+check: 'contains($event.original, "EventID")'
+normalize:
+  - check: 'contains($event.original, "EventID")'
+    map:
+      - 'event.dataset': 'sysmon-linux'
+      - 'event.kind': 'event'
+      - 'event.code': 'regex_extract($event.original, ''\x3CEventID\x3E([0-9]+)\x3C/EventID\x3E'')'
+enabled: true

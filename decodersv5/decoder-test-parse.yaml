@@ -1,0 +1,14 @@
+name: decoder/test-parse/0
+parents:
+  - decoder/core-wazuh-message/0
+metadata:
+  title: test parse decoder
+check: 'contains($event.original, "EventID")'
+normalize:
+  - check: 'contains($event.original, "EventID")'
+    map:
+      - 'event.dataset': 'sysmon-linux'
+      - 'event.kind': 'event'
+parse|event.original:
+  - '<(?P<_tmp.anything>.+)>'
+enabled: true

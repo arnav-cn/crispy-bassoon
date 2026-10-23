@@ -1,0 +1,12 @@
+name: decoder/test-simple10/0
+parents:
+  - decoder/core-wazuh-message/0
+metadata:
+  title: test simple decoder 10
+check: 'contains($event.original, "EventID")'
+normalize:
+  - check: 'contains($event.original, "EventID")'
+    map:
+      - 'event.code': 'regex_extract($event.original, ''EventID>([^:]*)'')'
+      - 'event.type': 'regex_extract($event.original, ''Channel>([^:]*)'')'
+enabled: true

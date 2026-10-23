@@ -1,0 +1,11 @@
+name: decoder/test-dq/0
+parents:
+  - decoder/core-wazuh-message/0
+metadata:
+  title: test decoder double-quoted
+check: 'contains($event.original, "EventID")'
+normalize:
+  - check: 'contains($event.original, "EventID")'
+    map:
+      - "event.code": "regex_extract($event.original, \"EventID>([0-9]+)\")"
+enabled: true
